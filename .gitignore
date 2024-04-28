@@ -2,5 +2,5 @@
 node_modules
 db/** */
 db/vpn.db
-cvpal-bf782-firebase-adminsdk-5obj2-ea1c9e1193.json
 /db
+/src/firebase/*.json
