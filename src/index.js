@@ -13,7 +13,7 @@ app.use(authenticate);
 // create and get vpn configs
 app.use("/users", require("./api/users/route"));
 
-app.listen(3000, async () => {
+app.listen(3001, async () => {
   await sequelize
     .sync()
     .then(() => {

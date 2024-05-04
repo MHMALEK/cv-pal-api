@@ -6,41 +6,51 @@ const sequelize = new Sequelize({
   storage: "./db/app.db",
 });
 
-const User = sequelize.define("User", {
-  id: {
-    type: Sequelize.NUMBER,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
+const User = sequelize.define(
+  "User",
+  {
+    id: {
+      type: Sequelize.STRING,
+      primaryKey: true,
+      allowNull: false,
+    },
+    email: {
+      type: Sequelize.STRING,
+      unique: true,
+      allowNull: false,
+    },
+    terms_accepted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    cvCount: {
+      type: Sequelize.INTEGER,
+      defaultValue: 0,
+    },
   },
-  Name: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    unique: true,
+  {
+    timestamps: true,
+  }
+);
+
+const LinkedInData = sequelize.define(
+  "linkedInData",
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    data: {
+      type: Sequelize.JSON,
+      allowNull: false,
+    },
   },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: true,
-    unique: true,
-  },
-  terms_accepted: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
-  cvCount: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-});
-const LinkedInData = sequelize.define("LinkedInData", {
-  id: {
-    type: Sequelize.STRING,
-    primaryKey: true,
-  },
-  data: Sequelize.JSON,
-});
+  {
+    timestamps: true,
+  }
+);
+
 LinkedInData.belongsTo(User);
 
 User.hasOne(LinkedInData);
@@ -51,10 +61,7 @@ const CV = sequelize.define("CV", {
     autoIncrement: true,
     primaryKey: true,
   },
-  userId: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+
   payload: Sequelize.TEXT,
   text: Sequelize.TEXT,
 });

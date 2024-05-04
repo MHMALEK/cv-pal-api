@@ -3,7 +3,12 @@ const authMiddleware = require("../middlewares/auth-middleware");
 const { User, LinkedInData, CV, CustomizedCV } = require("../../database");
 const { callGeminiApi } = require("../gemini/services");
 const router = express.Router();
-router.use(authMiddleware.authenticateAdmin);
+// router.use(authMiddleware.authenticateAdmin);
+
+router.get("/", async (req, res) => {
+  res.json("Hello, World!");
+  F;
+});
 
 router.get("/me", async (req, res) => {
   res.json({ email: req.user.email, terms_accepted: req.user.terms_accepted });
@@ -18,12 +23,13 @@ router.put("/me", async (req, res) => {
 
 router.put("/me/linkedin", async (req, res) => {
   const { data } = req.body;
+
   let linkedInData = await LinkedInData.findOne({
     where: { userId: req.user.id },
   });
+
   if (!linkedInData) {
-    linkedInData = await linkedInData.create({
-      id: req.user.id,
+    linkedInData = await LinkedInData.create({
       data,
       userId: req.user.id,
     });
@@ -31,10 +37,11 @@ router.put("/me/linkedin", async (req, res) => {
     linkedInData.data = data;
     await linkedInData.save();
   }
+
   res.json({ message: "LinkedIn data updated successfully" });
 });
 
-router.get("/me/cv", async (req, res) => {
+router.post("/me/cv/generate", async (req, res) => {
   // Retrieve LinkedIn data for the current user
   const linkedInData = await LinkedInData.findOne({
     where: { userId: req.user.id },
@@ -49,7 +56,7 @@ router.get("/me/cv", async (req, res) => {
   const newCVInDB = await CV.create({
     userId,
     payload,
-    text: response.data,
+    text: cv,
   });
 
   // Return the generated CV
