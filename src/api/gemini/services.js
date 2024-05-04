@@ -91,4 +91,5 @@ const data = {
 
 callGeminiApi(data).then((res) => console.log(res));
 
-export default callGeminiApi;
+// export default callGeminiApi;
+module.exports = callGeminiApi;
